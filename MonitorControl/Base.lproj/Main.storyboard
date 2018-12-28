@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -80,74 +80,6 @@
             </objects>
             <point key="canvasLocation" x="156" y="227"/>
         </scene>
-        <!--Keys Prefs View Controller-->
-        <scene sceneID="DmR-ia-4qL">
-            <objects>
-                <viewController storyboardIdentifier="KeysPrefsVC" id="MHy-Dv-i5A" customClass="KeysPrefsViewController" customModule="MonitorControl" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="nfK-n0-xN4">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="98"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fUf-UM-yW3">
-                                <rect key="frame" x="85" y="17" width="196" height="26"/>
-                                <popUpButtonCell key="cell" type="push" title="Both Brightness &amp; Volume" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Vr4-xb-B4o" id="DkZ-as-YDS">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
-                                    <menu key="menu" id="Hqj-cU-ZyP">
-                                        <items>
-                                            <menuItem title="Both Brightness &amp; Volume" state="on" id="Vr4-xb-B4o">
-                                                <modifierMask key="keyEquivalentModifierMask"/>
-                                            </menuItem>
-                                            <menuItem title="Brightness only" tag="1" id="hjz-0c-rvK">
-                                                <modifierMask key="keyEquivalentModifierMask"/>
-                                            </menuItem>
-                                            <menuItem title="Volume only" tag="2" id="NLP-dU-Dam">
-                                                <modifierMask key="keyEquivalentModifierMask"/>
-                                            </menuItem>
-                                        </items>
-                                    </menu>
-                                </popUpButtonCell>
-                                <connections>
-                                    <action selector="listenForChanged:" target="MHy-Dv-i5A" id="ANw-zX-wOu"/>
-                                </connections>
-                            </popUpButton>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jFY-ug-0KQ">
-                                <rect key="frame" x="18" y="22" width="61" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Listen for" id="Vh8-06-U3K">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Uti-Vm-YwB">
-                                <rect key="frame" x="18" y="49" width="59" height="29"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Keys" id="Dcz-GG-1li">
-                                    <font key="font" metaFont="systemBold" size="24"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="fUf-UM-yW3" firstAttribute="centerY" secondItem="jFY-ug-0KQ" secondAttribute="centerY" id="FA2-Mh-LBe"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fUf-UM-yW3" secondAttribute="trailing" constant="20" id="GBB-mP-L7K"/>
-                            <constraint firstItem="Uti-Vm-YwB" firstAttribute="leading" secondItem="nfK-n0-xN4" secondAttribute="leading" constant="20" id="Mfl-NR-mVk"/>
-                            <constraint firstItem="Uti-Vm-YwB" firstAttribute="top" secondItem="nfK-n0-xN4" secondAttribute="top" constant="20" id="ReX-zz-skV"/>
-                            <constraint firstAttribute="bottom" secondItem="fUf-UM-yW3" secondAttribute="bottom" constant="20" id="Rys-Fj-Tne"/>
-                            <constraint firstItem="fUf-UM-yW3" firstAttribute="leading" secondItem="jFY-ug-0KQ" secondAttribute="trailing" constant="10" id="Tic-nC-Oax"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Uti-Vm-YwB" secondAttribute="trailing" constant="20" id="ctI-eo-jEw"/>
-                            <constraint firstItem="jFY-ug-0KQ" firstAttribute="top" secondItem="Uti-Vm-YwB" secondAttribute="bottom" constant="10" id="t7Y-Pv-HlI"/>
-                            <constraint firstItem="jFY-ug-0KQ" firstAttribute="leading" secondItem="nfK-n0-xN4" secondAttribute="leading" constant="20" id="xCB-fT-tMo"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="listenFor" destination="fUf-UM-yW3" id="tgS-jF-nte"/>
-                    </connections>
-                </viewController>
-                <customObject id="hVj-0D-6XC" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="642" y="163"/>
-        </scene>
         <!--Display Prefs View Controller-->
         <scene sceneID="kdt-oj-Qke">
             <objects>
@@ -177,7 +109,7 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="" width="49" minWidth="40" maxWidth="1000" id="8U8-ec-Zbv">
+                                                <tableColumn width="49" minWidth="40" maxWidth="1000" id="8U8-ec-Zbv">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Enabled">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -208,7 +140,7 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="" width="186" minWidth="40" maxWidth="1000" id="CHc-s5-4MN">
+                                                <tableColumn width="186" minWidth="40" maxWidth="1000" id="CHc-s5-4MN">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Display Name">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -241,7 +173,7 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="" width="114" minWidth="10" maxWidth="3.4028234663852886e+38" id="dgp-q7-cBK">
+                                                <tableColumn width="114" minWidth="10" maxWidth="3.4028234663852886e+38" id="dgp-q7-cBK">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Display Id">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>

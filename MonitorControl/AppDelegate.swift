@@ -54,7 +54,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate {
     NotificationCenter.default.addObserver(self, selector: #selector(handleListenForChanged), name: NSNotification.Name.init(Utils.PrefKeys.listenFor.rawValue), object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(handleShowContrastChanged), name: NSNotification.Name.init(Utils.PrefKeys.showContrast.rawValue), object: nil)
 
-    statusItem.image = NSImage.init(named: "status")
+    statusItem.title = "🖥️"
     statusItem.menu = statusMenu
 
     setDefaultPrefs()
@@ -98,15 +98,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate {
   // MARK: - Menu
 
   func clearDisplays() {
-    if statusMenu.items.count > 2 {
-      var items: [NSMenuItem] = []
-      for i in 0..<statusMenu.items.count - 2 {
-        items.append(statusMenu.items[i])
-      }
-
-      for item in items {
-        statusMenu.removeItem(item)
-      }
+    while statusMenu.items.count > 3 {
+      statusMenu.removeItem(at: 0)
     }
 
     displays = []
@@ -169,16 +162,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate {
         let volumeSliderHandler = Utils.addSliderMenuItem(toMenu: monitorSubMenu,
                                                           forDisplay: display,
                                                           command: AUDIO_SPEAKER_VOLUME,
-                                                          title: NSLocalizedString("Volume", comment: "Shown in menu"))
+                                                          title: "🔊")
         let brightnessSliderHandler = Utils.addSliderMenuItem(toMenu: monitorSubMenu,
                                                               forDisplay: display,
                                                               command: BRIGHTNESS,
-                                                              title: NSLocalizedString("Brightness", comment: "Shown in menu"))
+                                                              title: "🔆")
         if prefs.bool(forKey: Utils.PrefKeys.showContrast.rawValue) {
           let contrastSliderHandler = Utils.addSliderMenuItem(toMenu: monitorSubMenu,
                                                               forDisplay: display,
                                                               command: CONTRAST,
-                                                              title: NSLocalizedString("Contrast", comment: "Shown in menu"))
+                                                              title: "🔳")
           display.contrastSliderHandler = contrastSliderHandler
         }
 

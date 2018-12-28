@@ -91,10 +91,10 @@ class Utils: NSObject {
   /// - Returns: An `NSSlider` slider
   static func addSliderMenuItem(toMenu menu: NSMenu, forDisplay display: Display, command: Int32, title: String) -> SliderHandler {
     let item = NSMenuItem()
-    let view = NSView(frame: NSRect(x: 0, y: 5, width: 250, height: 40))
-    let label = Utils.makeLabel(text: title, frame: NSRect(x: 20, y: 19, width: 130, height: 20))
+    let view = NSView(frame: NSRect(x: 0, y: 5, width: 270, height: 20))
+    let label = Utils.makeLabel(text: title, frame: NSRect(x: 20, y: 0, width: 20, height: 20))
     let handler = SliderHandler(display: display, command: command)
-    let slider = NSSlider(frame: NSRect(x: 20, y: 0, width: 200, height: 19))
+    let slider = NSSlider(frame: NSRect(x: 50, y: 0, width: 200, height: 19))
     slider.target = handler
     slider.minValue = 0
     slider.maxValue = 100
@@ -106,8 +106,7 @@ class Utils: NSObject {
 
     item.view = view
 
-    menu.insertItem(item, at: 0)
-    menu.insertItem(NSMenuItem.separator(), at: 1)
+    menu.insertItem(item, at: menu.items.count - 3)
 
     DispatchQueue.global(qos: .background).async {
       var val: Int?

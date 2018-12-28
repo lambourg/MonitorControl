@@ -23,7 +23,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate {
 
   let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
-  var monitorItems: [NSMenuItem] = []
   var displays: [Display] = []
 
   let step = 100/16
@@ -110,7 +109,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate {
       }
     }
 
-    monitorItems = []
     displays = []
   }
 
@@ -148,7 +146,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate {
       let item = NSMenuItem()
       item.title = NSLocalizedString("No supported display found", comment: "Shown in menu")
       item.isEnabled = false
-      monitorItems.append(item)
       statusMenu.insertItem(item, at: 0)
     }
   }
@@ -195,7 +192,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate {
           monitorMenuItem.submenu = monitorSubMenu
         }
 
-        monitorItems.append(monitorMenuItem)
         statusMenu.insertItem(monitorMenuItem, at: 0)
       }
     }

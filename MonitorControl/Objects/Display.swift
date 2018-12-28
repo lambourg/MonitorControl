@@ -38,6 +38,12 @@ class Display {
     }
 
     Utils.sendCommand(AUDIO_SPEAKER_VOLUME, toMonitor: identifier, withValue: value)
+    if isMuted {
+      //  Does not work on all monitors, but some do. So let's do both: put the volume to 0 (which may not be silent on some monitors) and use the mute command (which may not be supported on some monitors). This way we multiply the chances that at least one of those work
+      Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 1)
+    } else {
+      Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 2)
+    }
     if let slider = volumeSliderHandler?.slider {
       slider.intValue = Int32(value)
     }

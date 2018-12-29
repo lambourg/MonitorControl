@@ -11,7 +11,7 @@ Control your external monitor brightness, contrast or volume directly from a men
 
 ## Download
 
-Go to [Release](https://github.com/the0neyouseek/MonitorControl/releases/latest) and download the latest `.dmg`
+Go to [Release](https://github.com/lambourg/MonitorControl/releases/latest) and download the latest `.dmg`
 
 ## How to help
 
@@ -19,21 +19,22 @@ Open [issues](./issues) if you have a question, an enhancement to suggest or a b
 
 ## How to build
 
-### Required
+### Pre-requisite
 
 - XCode
 - [Cocoapods](https://cocoapods.org/)
-- [SwiftLint](https://github.com/realm/SwiftLint)
+- [SwiftLint](https://github.com/realm/SwiftLint) (optional)
 
-Download the [zip](https://github.com/the0neyouseek/MonitorControl/archive/master.zip) directly or clone the project somewhere with git
+First, clone the repository. Do not forget to use --recurse as there are submodules.
 
 ```sh
-$ git clone https://github.com/the0neyouseek/MonitorControl.git
+$ git clone --recurse https://github.com/lambourg/MonitorControl.git
 ```
 
 Then download the dependencies with Cocoapods
 
 ```sh
+$ cd MonitorControl
 $ pod install
 ```
 
@@ -42,6 +43,7 @@ You're all set ! Now open the `MonitorControl.xcworkspace` with Xcode
 ### Third party dependencies
 
 - [MediaKeyTap](https://github.com/the0neyouseek/MediaKeyTap)
+- [MASPreferences](https://github.com/shpakovski/MASPreferences)
 
 ## Support
 - macOS Sierra (`10.12`) and up.
@@ -52,3 +54,4 @@ You're all set ! Now open the `MonitorControl.xcworkspace` with Xcode
 - [@Tyilo](https://github.com/Tyilo/) (Fork)
 - [@Bensge](https://github.com/Bensge/) - (Used some code from his project [NativeDisplayBrightness](https://github.com/Bensge/NativeDisplayBrightness))
 - [@nhurden](https://github.com/nhurden/) (For the original MediaKeyTap)
+- [@the0neyouseek](https://github.com/the0neyouseek/) (For the addition of the preferences window, OSD)

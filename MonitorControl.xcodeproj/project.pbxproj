@@ -25,7 +25,6 @@
 		F091C9B31F6EA6110096FD65 /* SliderHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091C9B21F6EA6110096FD65 /* SliderHandler.swift */; };
 		F091C9B81F6EA79B0096FD65 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091C9B71F6EA79B0096FD65 /* Utils.swift */; };
 		F0A987E81F77B40E009B603D /* OSD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0A987D61F77B290009B603D /* OSD.framework */; };
-		F0EB972F1F6ED7C800686D2A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F091C9C11F6EB8660096FD65 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -74,8 +73,6 @@
 		F06792F1200A73470066C438 /* MonitorControlHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MonitorControlHelper.entitlements; sourceTree = "<group>"; };
 		F091C9B21F6EA6110096FD65 /* SliderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderHandler.swift; sourceTree = "<group>"; };
 		F091C9B71F6EA79B0096FD65 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		F091C9C21F6EB8660096FD65 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F091C9C31F6EB8720096FD65 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; lineEnding = 0; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F091C9C41F6EBA5A0096FD65 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		F0A987D61F77B290009B603D /* OSD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OSD.framework; sourceTree = "<group>"; };
 		F0A987DA1F77B404009B603D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
@@ -158,7 +155,6 @@
 				F091C9B41F6EA6180096FD65 /* Objects */,
 				F091C9C41F6EBA5A0096FD65 /* Bridging-Header.h */,
 				56754EB01D9A4016007BCDC5 /* Assets.xcassets */,
-				F091C9C11F6EB8660096FD65 /* Localizable.strings */,
 				56754EB51D9A4016007BCDC5 /* Info.plist */,
 			);
 			path = MonitorControl;
@@ -328,7 +324,6 @@
 			files = (
 				56754EB11D9A4016007BCDC5 /* Assets.xcassets in Resources */,
 				F0445D41200282E60025AE82 /* Main.storyboard in Resources */,
-				F0EB972F1F6ED7C800686D2A /* Localizable.strings in Resources */,
 				55359E3B1E2737EC002671BC /* ddcctl.sh in Resources */,
 				56754EB41D9A4016007BCDC5 /* MainMenu.xib in Resources */,
 			);
@@ -445,15 +440,6 @@
 				F0445D47200282F80025AE82 /* en */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		F091C9C11F6EB8660096FD65 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F091C9C21F6EB8660096FD65 /* en */,
-				F091C9C31F6EB8720096FD65 /* fr */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		F0A987D91F77B404009B603D /* MainMenu.strings */ = {

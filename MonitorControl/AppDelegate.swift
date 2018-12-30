@@ -4,7 +4,8 @@
 //
 //  Created by Mathew Kurian on 9/26/16.
 //  Last edited by Guillaume Broder on 9/17/2017
-//  MIT Licensed. 2017.
+//  Last edited by Jerome Lambourg on 30/12/2018
+//  MIT Licensed.
 //
 
 import Cocoa
@@ -104,7 +105,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate, AudioCt
   func updateDisplays() {
     clearDisplays()
 
-    var filteredScreens = NSScreen.screens.filter { screen -> Bool in
+    let filteredScreens = NSScreen.screens.filter { screen -> Bool in
       if let id = screen.deviceDescription[NSDeviceDescriptionKey.init("NSScreenNumber")] as? CGDirectDisplayID {
         // Is Built In Screen (e.g. MBP/iMac Screen)
         if CGDisplayIsBuiltin(id) != 0 {
@@ -122,12 +123,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate, AudioCt
       return false
     }
 
-    if filteredScreens.count == 1 {
-      self.addScreenToMenu(screen: filteredScreens[0], asSubMenu: false)
-    } else {
-      for screen in filteredScreens {
-        self.addScreenToMenu(screen: screen, asSubMenu: true)
-      }
+    for screen in filteredScreens {
+      self.addScreenToMenu(screen: screen)
     }
 
     if filteredScreens.count == 0 {
@@ -139,6 +136,49 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate, AudioCt
     }
 
     self.updateAudioOut()
+  }
+
+  /// Add a screen to the menu
+  ///
+  /// - Parameters:
+  ///   - screen: The screen to add
+  private func addScreenToMenu(screen: NSScreen) {
+    if let id = screen.deviceDescription[NSDeviceDescriptionKey.init("NSScreenNumber")] as? CGDirectDisplayID {
+
+      var edid = EDID()
+      if EDIDTest(id, &edid) {
+        let name = Utils.getDisplayName(forEdid: edid)
+        let serial = Utils.getDisplaySerial(forEdid: edid)
+
+        let display = Display.init(id, name: name, serial: serial)
+
+        let monitorMenuItem = NSMenuItem()
+        monitorMenuItem.title = "\(name)"
+
+        Utils.addMenuItem(toMenu: statusMenu, item: NSMenuItem.separator())
+        Utils.addMenuItem(toMenu: statusMenu, item: monitorMenuItem)
+
+        let volumeSliderHandler = Utils.addSliderMenuItem(toMenu: statusMenu,
+                                                          forDisplay: display,
+                                                          command: AUDIO_SPEAKER_VOLUME,
+                                                          title: "🔊")
+        let brightnessSliderHandler = Utils.addSliderMenuItem(toMenu: statusMenu,
+                                                              forDisplay: display,
+                                                              command: BRIGHTNESS,
+                                                              title: "🔆")
+        if prefs.bool(forKey: Utils.PrefKeys.showContrast.rawValue) {
+          let contrastSliderHandler = Utils.addSliderMenuItem(toMenu: statusMenu,
+                                                              forDisplay: display,
+                                                              command: CONTRAST,
+                                                              title: "🔳")
+          display.contrastSliderHandler = contrastSliderHandler
+        }
+
+        display.volumeSliderHandler = volumeSliderHandler
+        display.brightnessSliderHandler = brightnessSliderHandler
+        displays.append(display)
+      }
+    }
   }
 
   func updateAudioOut() {
@@ -163,85 +203,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate, AudioCt
     self.updateAudioOut()
   }
 
-  /// Add a screen to the menu
-  ///
-  /// - Parameters:
-  ///   - screen: The screen to add
-  ///   - asSubMenu: Display in a sub menu or directly in menu
-  private func addScreenToMenu(screen: NSScreen, asSubMenu: Bool) {
-    if let id = screen.deviceDescription[NSDeviceDescriptionKey.init("NSScreenNumber")] as? CGDirectDisplayID {
-
-      var edid = EDID()
-      if EDIDTest(id, &edid) {
-        let name = Utils.getDisplayName(forEdid: edid)
-        let serial = Utils.getDisplaySerial(forEdid: edid)
-
-        let display = Display.init(id, name: name, serial: serial)
-
-        let monitorSubMenu: NSMenu = asSubMenu ? NSMenu() : statusMenu
-        let volumeSliderHandler = Utils.addSliderMenuItem(toMenu: monitorSubMenu,
-                                                          forDisplay: display,
-                                                          command: AUDIO_SPEAKER_VOLUME,
-                                                          title: "🔊")
-        let brightnessSliderHandler = Utils.addSliderMenuItem(toMenu: monitorSubMenu,
-                                                              forDisplay: display,
-                                                              command: BRIGHTNESS,
-                                                              title: "🔆")
-        if prefs.bool(forKey: Utils.PrefKeys.showContrast.rawValue) {
-          let contrastSliderHandler = Utils.addSliderMenuItem(toMenu: monitorSubMenu,
-                                                              forDisplay: display,
-                                                              command: CONTRAST,
-                                                              title: "🔳")
-          display.contrastSliderHandler = contrastSliderHandler
-        }
-
-        display.volumeSliderHandler = volumeSliderHandler
-        display.brightnessSliderHandler = brightnessSliderHandler
-        displays.append(display)
-
-        let monitorMenuItem = NSMenuItem()
-        monitorMenuItem.title = "\(name)"
-        if asSubMenu {
-          monitorMenuItem.submenu = monitorSubMenu
-        }
-
-        statusMenu.insertItem(monitorMenuItem, at: 0)
-      }
-    }
-  }
-
   // MARK: - Media Key Tap delegate
 
-  func handle(mediaKey: MediaKey, event: KeyEvent?) {
+  func changeBrightness (_ amount: Int) {
     guard let currentDisplay = Utils.getCurrentDisplay(from: displays) else { return }
     let allDisplays = prefs.bool(forKey: Utils.PrefKeys.allScreens.rawValue) ? displays : [currentDisplay]
     for display in allDisplays {
       if (prefs.object(forKey: "\(display.identifier)-state") as? Bool) ?? true {
-        switch mediaKey {
-        case .brightnessUp:
-          let value = display.calcNewValue(for: BRIGHTNESS, withRel: +step)
-          display.setBrightness(to: value)
-        case .brightnessDown:
-          let value = currentDisplay.calcNewValue(for: BRIGHTNESS, withRel: -step)
-          display.setBrightness(to: value)
-        default:
-          break
-        }
+        let value = display.calcNewValue(for: BRIGHTNESS, withRel: amount)
+        display.setBrightness(to: value)
       }
     }
-    if self.audioOutDisplay != nil {
-      switch mediaKey {
-      case .mute:
-        self.audioOutDisplay!.mute()
-      case .volumeUp:
-        let value = self.audioOutDisplay!.calcNewValue(for: AUDIO_SPEAKER_VOLUME, withRel: +step)
-        self.audioOutDisplay!.setVolume(to: value)
-      case .volumeDown:
-        let value = self.audioOutDisplay!.calcNewValue(for: AUDIO_SPEAKER_VOLUME, withRel: -step)
-        self.audioOutDisplay!.setVolume(to: value)
-      default:
-        break
-      }
+  }
+
+  func changeVolume (_ amount: Int) {
+    guard let audioOutDisplay = self.audioOutDisplay else { return }
+    if (prefs.object(forKey: "\(audioOutDisplay.identifier)-state") as? Bool) ?? true {
+      let value = audioOutDisplay.calcNewValue(for: AUDIO_SPEAKER_VOLUME, withRel: amount)
+      audioOutDisplay.setVolume(to: value)
+    }
+  }
+
+  func handle(mediaKey: MediaKey, event: KeyEvent?) {
+    switch mediaKey {
+    case .brightnessUp:
+      changeBrightness(+step)
+    case .brightnessDown:
+      changeBrightness(-step)
+    case .mute:
+      self.audioOutDisplay?.toggleMute()
+    case .volumeUp:
+      changeVolume(+step)
+    case .volumeDown:
+      changeVolume(-step)
+    default:
+      break
     }
   }
 

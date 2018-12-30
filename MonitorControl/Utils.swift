@@ -3,6 +3,7 @@
 //  MonitorControl
 //
 //  Created by Guillaume BRODER on 9/17/2017.
+//  Last edited by Jerome Lambourg on 30/12/2018
 //  MIT Licensed.
 //
 
@@ -81,6 +82,11 @@ class Utils: NSObject {
     return label
   }
 
+  static func addMenuItem(toMenu menu: NSMenu, item: NSMenuItem) {
+    //  There's 3 fixed items at the bottom of the menu: separator, preferences and quit items
+    menu.insertItem(item, at: menu.items.count - 3)
+  }
+
   /// Create a slider and add it to the menu
   ///
   /// - Parameters:
@@ -106,7 +112,7 @@ class Utils: NSObject {
 
     item.view = view
 
-    menu.insertItem(item, at: menu.items.count - 3)
+    Utils.addMenuItem(toMenu: menu, item: item)
 
     DispatchQueue.global(qos: .background).async {
       var val: Int?

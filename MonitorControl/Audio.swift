@@ -3,7 +3,7 @@
 //  MonitorControl
 //
 //  Created by Jérôme Lambourg on 27/12/2018.
-//  Copyright © 2018 Mathew Kurian. All rights reserved.
+//  MIT Licensed.
 //
 
 import Foundation

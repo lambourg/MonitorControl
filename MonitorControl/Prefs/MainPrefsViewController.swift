@@ -30,7 +30,7 @@ class MainPrefsViewController: NSViewController, MASPreferencesViewController {
     }
 
 	@IBAction func startAtLoginClicked(_ sender: NSButton) {
-		let identifier = "me.guillaumeb.MonitorControlHelper" as CFString
+		let identifier = "com.lambourg.MonitorControlHelper" as CFString
 		switch sender.state {
 		case .on:
 			prefs.set(true, forKey: Utils.PrefKeys.startAtLogin.rawValue)

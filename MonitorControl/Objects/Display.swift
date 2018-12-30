@@ -3,6 +3,7 @@
 //  MonitorControl
 //
 //  Created by Guillaume BRODER on 02/01/2018.
+//  Modified by Jerome Lambourg (12/2018)
 //  MIT Licensed.
 //
 
@@ -15,6 +16,7 @@ class Display {
   let serial: String
   var isEnabled: Bool
   var isMuted: Bool = false
+  var muteCmdSupported: Bool
   var brightnessSliderHandler: SliderHandler?
   var volumeSliderHandler: SliderHandler?
   var contrastSliderHandler: SliderHandler?
@@ -28,27 +30,30 @@ class Display {
     self.serial = serial
     self.isEnabled = isEnabled
     self.bip = NSSound(named: "Pop")
+    let previous = Utils.getCommand(AUDIO_MUTE, fromMonitor: identifier)
+    self.muteCmdSupported = (previous == 1 || previous == 2)
   }
 
-  func mute() {
-    var value = 0
-    if isMuted {
-      value = prefs.integer(forKey: "\(AUDIO_SPEAKER_VOLUME)-\(identifier)")
-      isMuted = false
+  func toggleMute() {
+    isMuted = !isMuted
+    print ("toggleMute: ", isMuted)
+
+    let value: Int = isMuted ? 0 : self.loadValue(for: AUDIO_SPEAKER_VOLUME)
+
+    if muteCmdSupported {
+      if isMuted {
+        Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 1)
+      } else {
+        Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 2)
+      }
     } else {
-      isMuted = true
+      Utils.sendCommand(AUDIO_SPEAKER_VOLUME, toMonitor: identifier, withValue: value)
     }
 
-    Utils.sendCommand(AUDIO_SPEAKER_VOLUME, toMonitor: identifier, withValue: value)
-    if isMuted {
-      //  Does not work on all monitors, but some do. So let's do both: put the volume to 0 (which may not be silent on some monitors) and use the mute command (which may not be supported on some monitors). This way we multiply the chances that at least one of those work
-      Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 1)
-    } else {
-      Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 2)
-    }
     if let slider = volumeSliderHandler?.slider {
       slider.intValue = Int32(value)
     }
+    print("  show OSD: ", value)
     showOsd(command: AUDIO_SPEAKER_VOLUME, value: value)
     if !isMuted {
       bip?.stop()
@@ -56,23 +61,48 @@ class Display {
     }
   }
 
-  func setVolume(to value: Int) {
-    if isMuted {
-      self.mute()
+  func setVolume(to value: Int, save: Bool = true) {
+    print ("setVolume: ", value)
+    saveValue(value, for: AUDIO_SPEAKER_VOLUME)
+
+    var actual: Int
+
+    if muteCmdSupported {
+      if value >= 6 {
+        actual = (value - 6) * 100 / 94
+        print("  set volume to ", actual)
+        Utils.sendCommand(AUDIO_SPEAKER_VOLUME, toMonitor: identifier, withValue: actual)
+        if isMuted {
+          print("  unmute ", actual)
+          Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 2)
+          isMuted = false
+        }
+        actual = value
+      } else {
+        actual = 0
+        if !isMuted {
+          print("  mute")
+          Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 1)
+          isMuted = true
+        }
+      }
+    } else {
+      actual = value
+      Utils.sendCommand(AUDIO_SPEAKER_VOLUME, toMonitor: identifier, withValue: value)
     }
 
-    Utils.sendCommand(AUDIO_SPEAKER_VOLUME, toMonitor: identifier, withValue: value)
     if let slider = volumeSliderHandler?.slider {
       slider.intValue = Int32(value)
     }
-    showOsd(command: AUDIO_SPEAKER_VOLUME, value: value)
-    saveValue(value, for: AUDIO_SPEAKER_VOLUME)
+    print("  show OSD: ", actual)
+    showOsd(command: AUDIO_SPEAKER_VOLUME, value: actual)
 
     bip?.stop()
     bip?.play()
   }
 
   func setBrightness(to value: Int) {
+    let value = min(100, max(0, value))
     if prefs.bool(forKey: Utils.PrefKeys.lowerContrast.rawValue) {
       if value == 0 {
         Utils.sendCommand(CONTRAST, toMonitor: identifier, withValue: value)
@@ -98,6 +128,9 @@ class Display {
     return max(0, min(100, currentValue + rel))
   }
 
+  func loadValue(for command: Int32) -> Int {
+    return prefs.integer(forKey: "\(command)-\(identifier)")
+  }
   func saveValue(_ value: Int, for command: Int32) {
     prefs.set(value, forKey: "\(command)-\(identifier)")
   }

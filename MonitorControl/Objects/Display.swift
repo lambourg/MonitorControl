@@ -21,6 +21,7 @@ class Display {
   var volumeSliderHandler: SliderHandler?
   var contrastSliderHandler: SliderHandler?
   var bip: NSSound?
+  let MIN_MUTE_VALUE = 3
 
   private let prefs = UserDefaults.standard
 
@@ -41,9 +42,10 @@ class Display {
     let value: Int = isMuted ? 0 : self.loadValue(for: AUDIO_SPEAKER_VOLUME)
 
     if muteCmdSupported {
-      if isMuted {
+      let current = Utils.getCommand(AUDIO_MUTE, fromMonitor: identifier)
+      if current != 1 && isMuted {
         Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 1)
-      } else {
+      } else if current != 2 && !isMuted {
         Utils.sendCommand(AUDIO_MUTE, toMonitor: identifier, withValue: 2)
       }
     } else {
@@ -68,8 +70,8 @@ class Display {
     var actual: Int
 
     if muteCmdSupported {
-      if value >= 6 {
-        actual = (value - 6) * 100 / 94
+      if value >= MIN_MUTE_VALUE {
+        actual = (value - MIN_MUTE_VALUE) * 100 / (100 - MIN_MUTE_VALUE)
         print("  set volume to ", actual)
         Utils.sendCommand(AUDIO_SPEAKER_VOLUME, toMonitor: identifier, withValue: actual)
         if isMuted {

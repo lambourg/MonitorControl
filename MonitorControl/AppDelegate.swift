@@ -233,9 +233,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, MediaKeyTapDelegate, AudioCt
     case .mute:
       self.audioOutDisplay?.toggleMute()
     case .volumeUp:
-      changeVolume(+step)
+      changeVolume(+step / 2)
     case .volumeDown:
-      changeVolume(-step)
+      changeVolume(-step / 2)
     default:
       break
     }

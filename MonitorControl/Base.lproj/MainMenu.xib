@@ -13,7 +13,6 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MonitorControl" customModuleProvider="target">
             <connections>
-                <outlet property="quitClicked" destination="JTa-2I-AsI" id="pCf-S9-cfs"/>
                 <outlet property="statusMenu" destination="lCi-vw-mwp" id="iBf-iw-RcA"/>
             </connections>
         </customObject>

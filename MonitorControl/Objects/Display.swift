@@ -20,7 +20,6 @@ class Display {
   var brightnessSliderHandler: SliderHandler?
   var volumeSliderHandler: SliderHandler?
   var contrastSliderHandler: SliderHandler?
-  var bip: NSSound?
   let MIN_MUTE_VALUE = 3
 
   private let prefs = UserDefaults.standard
@@ -30,7 +29,6 @@ class Display {
     self.name = name
     self.serial = serial
     self.isEnabled = isEnabled
-    self.bip = NSSound(named: "Pop")
     let previous = Utils.getCommand(AUDIO_MUTE, fromMonitor: identifier)
     self.muteCmdSupported = (previous == 1 || previous == 2)
   }
@@ -58,8 +56,7 @@ class Display {
     print("  show OSD: ", value)
     showOsd(command: AUDIO_SPEAKER_VOLUME, value: value)
     if !isMuted {
-      bip?.stop()
-      bip?.play()
+      NSSound.beep()
     }
   }
 
@@ -99,8 +96,7 @@ class Display {
     print("  show OSD: ", actual)
     showOsd(command: AUDIO_SPEAKER_VOLUME, value: actual)
 
-    bip?.stop()
-    bip?.play()
+    NSSound.beep()
   }
 
   func setBrightness(to value: Int) {
